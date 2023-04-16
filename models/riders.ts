@@ -1,21 +1,31 @@
-import { Schema, model } from "mongoose";
+/**
+ * @file Rider Model
+ * @description Defines the Rider Model
+ * @author Ayobami Adebesin
+ */
+import { Schema, Types, model } from "mongoose";
+import { IOrder } from "./orders";
 import bcrypt from "bcryptjs";
 //Enum for Rider Status
-enum RiderStatus {
+export enum RiderStatus {
   Available = "available",
   Busy = "busy",
   OnBreak = "on_break",
 }
 
 // Create interface representing a Rider document
-interface IRider {
+export interface IRider {
   id: string;
   name: string;
   email: string;
   phone: string;
+  isActive: boolean;
   password: string;
-  current_location: string;
+  isLicensed: boolean;
+  current_location?: string;
   status: RiderStatus;
+  orders?: Array<IOrder>;
+  current_order?: Types.ObjectId;
   created_at: Date;
   updated_at: Date;
 }
@@ -26,10 +36,13 @@ const RiderSchema = new Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
     phone: { type: String, required: true, trim: true },
+    isActive: { type: Boolean, required: true, default: true },
     password: { type: String, required: true, trim: true },
-    isLicensed: { type: Boolean },
+    isLicensed: { type: Boolean, required: true, default: false },
     current_location: { type: String, trim: true },
     status: { type: String, enum: RiderStatus, default: RiderStatus.Available },
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+    current_order: { type: Schema.Types.ObjectId, ref: "Order" },
   },
   {
     timestamps: true,
