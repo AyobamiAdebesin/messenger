@@ -3,21 +3,24 @@
  * @description Defines the Customer Model
  * @author Ayobami Adebesin
  */
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 import bcrypt from "bcryptjs";
+import { IOrder } from "./orders";
 // Create interface representing a Customer document
-interface ICustomer {
+export interface ICustomer {
   id: string;
   name: string;
   email: string;
   phone: string;
   password: string;
+  orders?: Array<IOrder>;
+  latest_order?: Types.ObjectId;
   created_at: Date;
   updated_at: Date;
 }
 
 // Create Schema for Customer
-const CustomerSchema = new Schema(
+const CustomerSchema = new Schema<ICustomer>(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
