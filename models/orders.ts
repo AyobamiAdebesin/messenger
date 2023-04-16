@@ -1,6 +1,11 @@
-import { Schema, model } from "mongoose";
+/**
+ * @file Order model
+ * @description Defines the Order Model
+ * @author Ayobami Adebesin
+ */
+import { Schema, model, Types } from "mongoose";
 // Enum for Order status
-enum OrderStatus {
+export enum OrderStatus {
   Pending = "pending",
   InProgress = "in_progress",
   Delivered = "delivered",
@@ -8,10 +13,11 @@ enum OrderStatus {
 }
 
 // Create interface representing an Order document
-interface IOrder {
+export interface IOrder {
   id: string;
-  customer_id: string;
-  rider_id: string;
+  order_description: string;
+  customer_id: Types.ObjectId;
+  rider_id: Types.ObjectId;
   pickup_address: string;
   delivery_address: string;
   status: OrderStatus;
@@ -20,7 +26,7 @@ interface IOrder {
 }
 
 // Create Schema for Order
-const OrderSchema = new Schema(
+const OrderSchema = new Schema<IOrder>(
   {
     order_description: { type: String, required: true, trim: true },
     customer_id: {
