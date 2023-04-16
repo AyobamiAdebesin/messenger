@@ -1,3 +1,8 @@
+/**
+ * @file Customer Model
+ * @description Defines the Customer Model
+ * @author Ayobami Adebesin
+ */
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 // Create interface representing a Customer document
@@ -18,6 +23,8 @@ const CustomerSchema = new Schema(
     email: { type: String, required: true, trim: true },
     phone: { type: String, required: true, trim: true },
     password: { type: String, required: true, trim: true },
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+    latest_order: { type: Schema.Types.ObjectId, ref: "Order" },
   },
   {
     timestamps: true,
