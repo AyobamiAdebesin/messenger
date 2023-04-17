@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 const riderRouter = require("./routers/riderRouter");
 const customerRouter = require("./routers/customerRouter");
 const orderRouter = require("./routers/orderRouter");
+const thirdPartyRouter = require("./routers/thirdPartyRouter");
 
 // Load env vars from .env file into process.env before we connect to the database
 // This is so that we can use the environment variables in the database connection
@@ -31,7 +32,7 @@ app.use(express.json());
 app.use("/api/v1/riders", riderRouter);
 app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/orders", orderRouter);
-
+app.use("/api/v1/logistics", thirdPartyRouter);
 
 // Route to index page
 app.get("/", (req: Request, res: Response) => {
