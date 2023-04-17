@@ -52,9 +52,3 @@ Since every order is assigned to a Rider, a Rider can update an order. For a Rid
 If these conditions are satisfied, we update order status to IN_PROGRESS and assign the rider to the order. We then update current order of the rider to the order. We also update the current location of the rider to the pickup address of the order. Note that in a real world scenario, the rider's current_location should be updated with a location tracking service.
 
 Third Party Users can also fetch information about orders assigned to their company.
-
-
-### NOTE
-Due to time constraints, and my very first time working with Typescript, I was not able to write tests for this API. If I had the time, I would use Jest framework to write unit tests and E2E tests for this API. It was great learning TypeScript with this assessment. I hope to hear a favorable response from this assessment.
-
-THANKS.
