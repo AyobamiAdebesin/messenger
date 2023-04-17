@@ -1,19 +1,23 @@
 import orderController from "../controllers/orderController";
 import express from "express";
-import protect from "../middleware/authMiddleware";
+import riderRequired from "../middleware/riderAuthMiddleware";
+import customerRequired from "../middleware/customerAuthMiddleware";
 const router: express.Router = express.Router();
 
+router.post("/create", customerRequired, orderController.createOrder);
 
-router.post("/place_order", protect, orderController.createOrder);
-router.put("/update/:orderId", protect, orderController.updateOrderStatus);
-router.put("/accept/:orderId", protect, orderController.acceptOrder);
-router.get("/fetch_all", protect, orderController.fetchAllOrders);
-router.get("/get_order/:orderId", protect, orderController.getOrdersByCustomerId);
-router.get("/count_orders", protect, orderController.countAllOrders);
-router.get("/get_pending", protect, orderController.getPendingOrders);
-router.get("/get_delivered", protect, orderController.getDeliveredOrders);
-router.get("/get_cancelled", protect, orderController.getCancelledOrders);
-// router.get("/get_rider_orders", protect, orderController.getRiderOrders);
-
+router.put(
+  "/update/:orderId",
+  riderRequired,
+  orderController.updateOrderStatus
+);
+router.put("/accept/:orderId", riderRequired, orderController.acceptOrder);
+router.get("/fetch_all", riderRequired, orderController.fetchAllOrders);
+router.get("/get_order/:orderId", riderRequired, orderController.getOrdersByCustomerId);
+// router.get("/count_orders", riderRequired, orderController.countAllOrders);
+// router.get("/get_pending", riderRequired, orderController.getPendingOrders);
+// router.get("/get_delivered", riderRequired, orderController.getDeliveredOrders);
+// router.get("/get_cancelled", riderRequired, orderController.getCancelledOrders);
+// router.get("/get_rider_orders", riderRequired, orderController.getRiderOrders);
 
 module.exports = router;
