@@ -1,4 +1,4 @@
-import { Rider } from "../models/riders";
+import { IRider, Rider } from "../models/riders";
 import { Request, Response } from "express";
 import { generateToken } from "../config/generateToken";
 import matchPassword from "../config/validatePassword";
@@ -32,7 +32,7 @@ class riderController {
     if ((await Rider.findOne({ email })) !== null) {
       res.status(400).send(errMsg3);
     } else {
-      const newRider = await Rider.create({
+      const newRider: IRider = await Rider.create({
         name: name,
         email: email,
         phone: phone,
@@ -45,9 +45,8 @@ class riderController {
           name: newRider.name,
           email: newRider.email,
           phone: newRider.phone,
-          token: generateToken(newRider._id),
+          message: "Profile created successfully",
         };
-
         res.status(200).send(returnObject);
       } else {
         res.status(400).send(errMsg4);
@@ -68,7 +67,7 @@ class riderController {
      * @throws  {Error} - Throws an error if the user's email or password is not provided
      */
     const { email, password } = req.body;
-    const user = await Rider.findOne({ email });
+    const user: IRider | null = await Rider.findOne({ email });
 
     if (!email || !password) {
       res.status(400).send(errMsg1);
@@ -81,6 +80,7 @@ class riderController {
         name: user.name,
         email: user.email,
         token: generateToken(user._id),
+        message: "Login successful",
       });
     } else {
       res.status(401).send(errMsg5);
