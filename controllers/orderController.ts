@@ -29,6 +29,8 @@ class orderController {
         status: OrderStatus.Pending,
       });
       if (newOrder) {
+        //Add orders to list of customer's orders
+        req.customer!.orders?.push(newOrder);
         const returnObject = {
           _id: newOrder._id,
           order_description: order_description,
