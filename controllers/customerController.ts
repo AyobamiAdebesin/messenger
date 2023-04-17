@@ -1,10 +1,9 @@
-import { Customer } from "../models/customers";
+import { Customer, ICustomer } from "../models/customers";
 import { Request, Response } from "express";
 import { generateToken } from "../config/generateToken";
 import matchPassword from "../config/validatePassword";
 
 const errMsg1: string = "Please fill all fields";
-const errMsg2: string = "You need to be licensed to be a rider";
 const errMsg3: string = "Email already exists!";
 const errMsg4: string = "Error creating profile. Try again!";
 const errMsg5: string = "Invalid email or password";
@@ -16,11 +15,12 @@ class customerController {
      * @param req : Request
      * @param res : Response
      * @returns
-     * @route POST /api/users/register_customer
+     * @route POST /api/v1/customers/signup
      *
      */
     const { name, email, phone, password } = req.body;
 
+    // Check if all fields are filled
     if (!name || !email || !phone || !password) {
       res.status(400).send();
       throw new Error(errMsg1);
@@ -29,7 +29,7 @@ class customerController {
     if ((await Customer.findOne({ email })) !== null) {
       res.status(400).send(errMsg3);
     } else {
-      const newCustomer = await Customer.create({
+      const newCustomer: ICustomer = await Customer.create({
         name: name,
         email: email,
         phone: phone,
@@ -42,9 +42,8 @@ class customerController {
           name: newCustomer.name,
           email: newCustomer.email,
           phone: newCustomer.phone,
-          token: generateToken(newCustomer._id),
+          message: "Profile created successfully",
         };
-
         res.status(200).send(returnObject);
       } else {
         res.status(400).send(errMsg4);
@@ -55,7 +54,7 @@ class customerController {
   static async loginCustomer(req: Request, res: Response) {
     /**
      * @desc    Authenticate and login a Customer
-     * @route   POST "/api/login"
+     * @route   POST "/api/v1/customers/login"
      * @access  Public
      * @param   {Object} req - The request object
      * @param   {Object} res - The response object
@@ -64,7 +63,7 @@ class customerController {
      * @throws  {Error} - Throws an error if the user's email or password is not provided
      */
     const { email, password } = req.body;
-    const user = await Customer.findOne({ email });
+    const user: ICustomer | null = await Customer.findOne({ email });
 
     if (!email || !password) {
       res.status(400).send(errMsg1);
@@ -77,6 +76,7 @@ class customerController {
         name: user.name,
         email: user.email,
         token: generateToken(user._id),
+        message: "Login successful",
       });
     } else {
       res.status(401).send(errMsg5);
