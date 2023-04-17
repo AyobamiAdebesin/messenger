@@ -10,7 +10,7 @@
  * @exports protect
  */
 const jwt = require("jsonwebtoken");
-import { Customer } from "../models/customers";
+import { IThirdParty } from "../models/thirdParty";
 import { Rider } from "../models/riders";
 import { ICustomer } from "../models/customers";
 import { IRider } from "../models/riders";
@@ -26,6 +26,7 @@ declare global {
     interface Request {
       rider?: IRider | null;
       customer?: ICustomer | null;
+      thirdParty?: IThirdParty | null;
     }
   }
 }
