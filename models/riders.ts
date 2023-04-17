@@ -3,7 +3,7 @@
  * @description Defines the Rider Model
  * @author Ayobami Adebesin
  */
-import { Schema, Types, model } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 import { IOrder } from "./orders";
 import bcrypt from "bcryptjs";
 //Enum for Rider Status
@@ -14,12 +14,12 @@ export enum RiderStatus {
 }
 
 // Create interface representing a Rider document
-export interface IRider {
-  id: string;
+export interface IRider extends Document {
+  _id: string;
   name: string;
   email: string;
   phone: string;
-  isActive: boolean;
+  isActive?: boolean;
   password: string;
   isLicensed: boolean;
   current_location?: string;
@@ -36,13 +36,13 @@ const RiderSchema = new Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
     phone: { type: String, required: true, trim: true },
-    isActive: { type: Boolean, required: true, default: true },
+    isActive: { type: Boolean, default: true },
     password: { type: String, required: true, trim: true },
-    isLicensed: { type: Boolean, required: true, default: false },
+    isLicensed: { type: Boolean, required: true, default: true },
     current_location: { type: String, trim: true },
     status: { type: String, enum: RiderStatus, default: RiderStatus.Available },
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
-    current_order: { type: Schema.Types.ObjectId, ref: "Order" },
+    current_order: { type: Schema.Types.ObjectId, ref: "Order", default: null },
   },
   {
     timestamps: true,
