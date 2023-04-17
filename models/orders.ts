@@ -13,7 +13,7 @@ export enum OrderStatus {
 }
 
 // Create interface representing an Order document
-export interface IOrder extends Document{
+export interface IOrder extends Document {
   _id: string;
   order_description: string;
   customer_id: Types.ObjectId;
@@ -21,6 +21,7 @@ export interface IOrder extends Document{
   pickup_address: string;
   delivery_address: string;
   status: OrderStatus;
+  logistic_companyId: Types.ObjectId;
   created_at: Date;
   updated_at: Date;
 }
@@ -38,6 +39,11 @@ const OrderSchema = new Schema<IOrder>(
     pickup_address: { type: String, required: true, trim: true },
     delivery_address: { type: String, required: true, trim: true },
     status: { type: String, enum: OrderStatus, default: OrderStatus.Pending },
+    logistic_companyId: {
+      type: Schema.Types.ObjectId,
+      ref: "ThirdParty",
+      default: null,
+    },
   },
   {
     timestamps: true,
