@@ -2,6 +2,7 @@ import orderController from "../controllers/orderController";
 import express from "express";
 import riderRequired from "../middleware/riderAuthMiddleware";
 import customerRequired from "../middleware/customerAuthMiddleware";
+import thirdPartyRequired from "../middleware/thirdpartyAuthMiddleware";
 const router: express.Router = express.Router();
 
 router.post("/create", customerRequired, orderController.createOrder);
